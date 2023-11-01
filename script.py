@@ -20,6 +20,8 @@ monitor_url = 'http://localhost:9090/'
 
 input = 2
 
+sleep_time = 1
+
 def request_result(c):
     return requests.get(url[c], params={'input': input}).json()['output']
 
@@ -41,4 +43,4 @@ if __name__ == '__main__':
         print(f'Requesting {c}...')
         print(f'Result: {request_result(c)}')
         display_monitor()
-        time.sleep(1)
+        time.sleep(sleep_time)

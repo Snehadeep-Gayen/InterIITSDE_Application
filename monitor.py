@@ -12,7 +12,7 @@ url = {}
 # for computation
 rate_of_slope = {}
 slope = {}
-coord = {}
+x = {}
 restart_time = 10
 capacity = 0.20
 
@@ -24,7 +24,7 @@ def check_redirect(microservice):
     if len(pings[microservice]) < 2:
         return
     elif len(pings[microservice]) == 2:
-        coord[microservice] = (pings[microservice][1] + pings[microservice][0])/2
+        x[microservice] = (pings[microservice][1] + pings[microservice][0])/2
         slope[microservice] = 1/(pings[microservice][1] - pings[microservice][0])
         return
     else:
@@ -33,10 +33,10 @@ def check_redirect(microservice):
         m2 = 1/(pings[microservice][-1] - pings[microservice][-2])
         # take average 
         m1 = slope[microservice]
-        x1 = coord[microservice]
+        x1 = x[microservice]
         # recompute (check md file for details)
         slope[microservice] = (m1 + m2)/2
-        coord[microservice] = (x1 + x2)/2
+        x[microservice] = (x1 + x2)/2
         rate_of_slope[microservice] = (m2 - m1)/(x2 - x1)
 
     # if the projected rate of requests at current time
@@ -95,7 +95,7 @@ def register():
 def show_status():
     # return both pings and ready queue
     return jsonify({'pings': pings, 'ready_queue': ready_queue, \
-        'url': url, 'rate_of_slope': rate_of_slope, 'slope': slope, 'coord': coord})
+        'url': url, 'rate_of_slope': rate_of_slope, 'slope': slope, 'x': x})
 
 if __name__ == '__main__':
     pings = {}
@@ -103,5 +103,5 @@ if __name__ == '__main__':
     url = {}
     rate_of_slope = {}
     slope = {}
-    coord = {}
+    x = {}
     app.run(host='0.0.0.0', port=9090)
